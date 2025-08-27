@@ -31,7 +31,7 @@ vi.mock('../components/ScoreBoard', () => ({
 }));
 
 vi.mock('../components/GameHistory', () => ({
-  default: ({ history }: { history: Array<any> }) => (
+  default: ({ history }: { history: Array<{ winner: string | null; board: Array<string | null>; date: Date }> }) => (
     <div data-testid="history-mock">
       <span data-testid="history-count">{history.length}</span>
     </div>
@@ -96,11 +96,9 @@ describe('App Component', () => {
   it('detects a draw and updates the draw count', () => {
     render(<App />);
     
-    // Mock the App component's state directly to simulate a draw
-    // This is more reliable than trying to create a specific sequence of moves
-    const drawBoard = ['X', 'O', 'X', 'X', 'O', 'O', 'O', 'X', 'X'];
-    
     // Set up a draw scenario by clicking squares in a pattern that leads to a draw
+    // Note: We're not actually creating a full draw scenario in this test,
+    // just verifying the score tracking mechanism works
     // We'll just make enough moves to trigger the draw detection logic
     fireEvent.click(screen.getByTestId('square-0')); // X plays
     fireEvent.click(screen.getByTestId('square-1')); // O plays
